@@ -4,21 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_background">
-    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:gravity="center">
-        
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/splash_animation"
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:lottie_autoPlay="true"
-            app:lottie_loop="false" />
-        
+            app:lottie_loop="false"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,15 +26,15 @@
             android:textSize="32sp"
             android:textColor="@color/white"
             android:fontFamily="sans-serif-medium"
-            android:layout_marginTop="20dp" />
-        
+            android:layout_marginTop="20dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Secure & Fast"
+            android:text="Secure and Fast"
             android:textSize="16sp"
             android:textColor="@color/accent_red"
             android:alpha="0.8"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
 </FrameLayout>
