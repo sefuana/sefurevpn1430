@@ -2,14 +2,20 @@ package com.sefure.vpn;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ColorStateList;
 import android.net.VpnService;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
-import android.view.*;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.button.MaterialButton;
@@ -54,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListeners() {
         connectButton.setOnClickListener(v -> toggleVPN());
-
         adminIcon.setOnClickListener(v -> {
             if (prefs.getBoolean("isAdmin", false)) {
                 startActivity(new Intent(this, AdminPanelActivity.class));
@@ -89,47 +94,42 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SeFuReVPNService.class);
         intent.setAction("CONNECT");
         ContextCompat.startForegroundService(this, intent);
-
         isConnected = true;
         connectedTime = System.currentTimeMillis();
         animateConnection(true);
         startTimer();
-
-        FirebaseManager.logConnection(true, getDeviceId());
+        FirebaseManager.logConnection(true, fetchDeviceId());
     }
 
     private void stopVPN() {
         Intent intent = new Intent(this, SeFuReVPNService.class);
         intent.setAction("DISCONNECT");
         startService(intent);
-
         isConnected = false;
         animateConnection(false);
         handler.removeCallbacks(timerRunnable);
         timerText.setText("00:00:00");
-
-        FirebaseManager.logConnection(false, getDeviceId());
+        FirebaseManager.logConnection(false, fetchDeviceId());
     }
 
     private void animateConnection(boolean connected) {
-        ScaleAnimation scaleAnimation = new ScaleAnimation(
+        ScaleAnimation anim = new ScaleAnimation(
             1f, connected ? 1.1f : 1f,
             1f, connected ? 1.1f : 1f,
             Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f
-        );
-        scaleAnimation.setDuration(500);
-        scaleAnimation.setFillAfter(true);
-        connectButton.startAnimation(scaleAnimation);
+            Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(500);
+        anim.setFillAfter(true);
+        connectButton.startAnimation(anim);
 
         if (connected) {
             connectButton.setText("DISCONNECT");
-            connectButton.setBackgroundTintList(ColorStateList.valueOf(
-                getColor(android.R.color.holo_red_dark)));
+            connectButton.setBackgroundTintList(
+                ColorStateList.valueOf(getColor(android.R.color.holo_red_dark)));
         } else {
             connectButton.setText("CONNECT");
-            connectButton.setBackgroundTintList(ColorStateList.valueOf(
-                getColor(R.color.accent_red)));
+            connectButton.setBackgroundTintList(
+                ColorStateList.valueOf(getColor(R.color.accent_red)));
         }
     }
 
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     uploadSpeed.setText(String.format("%.1f KB/s", speeds[0]));
                     downloadSpeed.setText(String.format("%.1f KB/s", speeds[1]));
                     totalData.setText(vpnManager.getTotalDataUsage());
-                    FirebaseManager.updateSpeedData(getDeviceId(), speeds[0], speeds[1]);
+                    FirebaseManager.updateSpeedData(fetchDeviceId(), speeds[0], speeds[1]);
                 }
                 handler.postDelayed(this, 1000);
             }
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             .show();
     }
 
-    private String getDeviceId() {
+    private String fetchDeviceId() {
         return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

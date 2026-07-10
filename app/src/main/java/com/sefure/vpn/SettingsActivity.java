@@ -1,31 +1,32 @@
 package com.sefure.vpn;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class SettingsActivity extends AppCompatActivity {
     private Switch autoConnectSwitch, darkModeSwitch;
     private SharedPreferences prefs;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        
+
         prefs = getSharedPreferences("SeFuRePrefs", MODE_PRIVATE);
-        
+
         autoConnectSwitch = findViewById(R.id.auto_connect_switch);
         darkModeSwitch = findViewById(R.id.dark_mode_switch);
-        
+
         autoConnectSwitch.setChecked(prefs.getBoolean("autoConnect", false));
         darkModeSwitch.setChecked(prefs.getBoolean("darkMode", true));
-        
-        autoConnectSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("autoConnect", isChecked).apply();
-        });
-        
+
+        autoConnectSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+            prefs.edit().putBoolean("autoConnect", isChecked).apply());
+
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             prefs.edit().putBoolean("darkMode", isChecked).apply();
             if (isChecked) {
@@ -34,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         });
-        
+
         ImageView backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
     }
