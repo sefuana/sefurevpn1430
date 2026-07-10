@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'  // ETA ADD KORUN
+}
+
+android {
+    namespace 'com.sefure.vpn'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.sefure.vpn"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        
+        // ETA ADD KORUN:
+        buildConfigField "String", "FIREBASE_URL", '"https://sefure-ec152-default-rtdb.firebaseio.com"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+    
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    
+    // EIGULA ADD KORUN:
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-auth'
+    
+    implementation 'com.airbnb.android:lottie:6.1.0'
+}

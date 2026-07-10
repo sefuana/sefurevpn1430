@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SeFuRe VPN</string>
+    <string name="connect">CONNECT</string>
+    <string name="disconnect">DISCONNECT</string>
+    <string name="admin_panel">Admin Panel</string>
+    <string name="settings">Settings</string>
+    <string name="vpn_connected">SeFuRe VPN Connected</string>
+    <string name="vpn_secure">Your connection is secure</string>
+</resources>
